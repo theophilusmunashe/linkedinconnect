@@ -35,6 +35,18 @@ export async function POST(request: NextRequest) {
       }
     })
 
+    // Test the connection
+    try {
+      await transporter.verify()
+      console.log('SMTP connection verified successfully')
+    } catch (verifyError: any) {
+      console.error('SMTP connection failed:', verifyError)
+      return NextResponse.json(
+        { error: 'Email service configuration error', details: (verifyError as Error).message },
+        { status: 500 }
+      )
+    }
+
     // Email to Theo
     const mailOptions = {
       from: process.env.GMAIL_USER,
