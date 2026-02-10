@@ -12,11 +12,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Debug: Check if environment variables are loaded
-    console.log('GMAIL_USER:', process.env.GMAIL_USER)
-    console.log('GMAIL_PASS exists:', !!process.env.GMAIL_PASS)
-
+    // Check if environment variables are loaded
     if (!process.env.GMAIL_USER || !process.env.GMAIL_PASS) {
+      console.error('Email configuration missing - Check .env.local file')
       return NextResponse.json(
         { error: 'Email configuration missing' },
         { status: 500 }
@@ -41,9 +39,9 @@ export async function POST(request: NextRequest) {
     const mailOptions = {
       from: process.env.GMAIL_USER,
       to: 'theophilusmunashe694@gmail.com',
-      subject: 'New Feedback from LinkedIn Connect',
+      subject: 'New Connection Feedback from LinkedIn Connect',
       html: `
-        <h2>New Feedback Received</h2>
+        <h2>New Connection Feedback Received</h2>
         <p><strong>From:</strong> ${email}</p>
         <p><strong>Feedback:</strong></p>
         <p>${feedback}</p>
